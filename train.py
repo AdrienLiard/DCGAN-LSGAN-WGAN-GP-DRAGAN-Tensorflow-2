@@ -31,6 +31,7 @@ py.arg('--gradient_penalty_mode', default='none', choices=['none', 'dragan', 'wg
 py.arg('--gradient_penalty_weight', type=float, default=10.0)
 py.arg('--experiment_name', default='none')
 py.arg('--generate_samples_every', type=int, default=100)
+py.arg('--save_folder', type=str, default="output")
 args = py.args()
 
 # output_dir
@@ -38,7 +39,7 @@ if args.experiment_name == 'none':
     args.experiment_name = '%s_%s' % (args.dataset, args.adversarial_loss_mode)
     if args.gradient_penalty_mode != 'none':
         args.experiment_name += '_%s' % args.gradient_penalty_mode
-output_dir = py.join('output', args.experiment_name)
+output_dir = py.join(args.save_folder, args.experiment_name)
 py.mkdir(output_dir)
 
 # save settings

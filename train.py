@@ -17,7 +17,9 @@ import module
 # ==============================================================================
 
 # command line
-py.arg('--dataset', default='fashion_mnist', choices=['cifar10', 'fashion_mnist', 'mnist', 'celeba', 'anime', 'custom'])
+py.arg('--dataset', default='fashion_mnist', choices=['cifar10', 'fashion_mnist', 'mnist', 'celeba', 'anime', 'custom','grayscale'])
+py.arg('--img_path',type=str, default='images')
+py.arg('--n_upsampling', type=int, default=4)
 py.arg('--batch_size', type=int, default=64)
 py.arg('--epochs', type=int, default=25)
 py.arg('--lr', type=float, default=0.0002)
@@ -28,6 +30,7 @@ py.arg('--adversarial_loss_mode', default='gan', choices=['gan', 'hinge_v1', 'hi
 py.arg('--gradient_penalty_mode', default='none', choices=['none', 'dragan', 'wgan-gp'])
 py.arg('--gradient_penalty_weight', type=float, default=10.0)
 py.arg('--experiment_name', default='none')
+py.arg('--generate_samples_every', type=int, default=100)
 args = py.args()
 
 # output_dir
@@ -61,13 +64,21 @@ elif args.dataset == 'anime':  # 64x64
     dataset, shape, len_dataset = data.make_anime_dataset(img_paths, args.batch_size)
     n_G_upsamplings = n_D_downsamplings = 4
 
+elif args.dataset == 'grayscale':
+    # ======================================
+    # =               grayscale              =
+    # ======================================
+    img_paths = py.glob(args.img_path, '*.png')
+    dataset, shape, len_dataset = data.make_grayscale_dataset(img_paths, args.batch_size)
+    n_G_upsamplings = n_D_downsamplings = args.n_upsampling
+
 elif args.dataset == 'custom':
     # ======================================
     # =               custom               =
     # ======================================
-    img_paths = ...  # image paths of custom dataset
-    dataset, shape, len_dataset = data.make_custom_dataset(img_paths, args.batch_size)
-    n_G_upsamplings = n_D_downsamplings = ...  # 3 for 32x32 and 4 for 64x64
+    img_paths = py.glob(args.img_path, '*.png')
+    dataset, shape, len_dataset = data.make_anime_dataset(img_paths, args.batch_size)
+    n_G_upsamplings = n_D_downsamplings = args.n_upsampling
     # ======================================
     # =               custom               =
     # ======================================
@@ -190,8 +201,8 @@ with train_summary_writer.as_default():
                 tl.summary(G_loss_dict, step=G_optimizer.iterations, name='G_losses')
 
             # sample
-            if G_optimizer.iterations.numpy() % 100 == 0:
-                x_fake = sample(z)
+            if G_optimizer.iterations.numpy() % args.generate_samples_every == 0:
+                x_fake = sample(z).numpy()
                 img = im.immerge(x_fake, n_rows=10).squeeze()
                 im.imwrite(img, py.join(sample_dir, 'iter-%09d.jpg' % G_optimizer.iterations.numpy()))
 

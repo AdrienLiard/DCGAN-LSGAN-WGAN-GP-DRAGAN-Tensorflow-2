@@ -6,3 +6,4 @@ __pycache__/
 /v1/sample_images_while_training/
 /v1/data/
 /v1/checkpoints/
+/env/

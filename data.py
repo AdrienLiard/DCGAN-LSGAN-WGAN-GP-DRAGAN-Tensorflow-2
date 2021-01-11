@@ -86,7 +86,6 @@ def make_grayscale_dataset(img_paths, batch_size, resize=64, drop_remainder=True
         img = tf.clip_by_value(img, 0, 255)
         img = img / 127.5 - 1
         return img
-
     dataset = tl.disk_image_batch_dataset(img_paths,
                                         batch_size,
                                         drop_remainder=drop_remainder,

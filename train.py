@@ -7,7 +7,7 @@ import tensorflow.keras as keras
 import tf2lib as tl
 import tf2gan as gan
 import tqdm
-
+import math
 import data
 import module
 
@@ -72,7 +72,7 @@ elif args.dataset == 'grayscale':
     # =               grayscale              =
     # ======================================
     img_paths = py.glob(args.img_path, args.img_pattern)
-    dataset, shape, len_dataset = data.make_grayscale_dataset(img_paths, args.batch_size)
+    dataset, shape, len_dataset = data.make_grayscale_dataset(img_paths, args.batch_size, resize=args.img_size)
     n_G_upsamplings = n_D_downsamplings = args.n_upsampling
 
 elif args.dataset == 'custom':

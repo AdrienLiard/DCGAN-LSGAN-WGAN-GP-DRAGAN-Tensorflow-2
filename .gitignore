@@ -8,3 +8,5 @@ __pycache__/
 /v1/checkpoints/
 /env/
 *.ipynb
+/temp/
+settings.json

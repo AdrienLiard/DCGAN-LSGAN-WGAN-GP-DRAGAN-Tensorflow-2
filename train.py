@@ -19,7 +19,7 @@ import module
 # command line
 py.arg('--dataset', default='fashion_mnist', choices=['cifar10', 'fashion_mnist', 'mnist', 'celeba', 'anime', 'custom','grayscale'])
 py.arg('--img_path',type=str, default='images')
-py.arg('--img_pattern', type="str", default="*.png")
+py.arg('--img_pattern', type=str, default="*.png")
 py.arg('--n_upsampling', type=int, default=4)
 py.arg('--batch_size', type=int, default=64)
 py.arg('--epochs', type=int, default=25)

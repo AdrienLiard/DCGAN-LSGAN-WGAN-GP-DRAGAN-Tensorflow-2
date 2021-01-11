@@ -7,3 +7,4 @@ __pycache__/
 /v1/data/
 /v1/checkpoints/
 /env/
+*.ipynb

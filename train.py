@@ -19,6 +19,7 @@ import module
 # command line
 py.arg('--dataset', default='fashion_mnist', choices=['cifar10', 'fashion_mnist', 'mnist', 'celeba', 'anime', 'custom','grayscale'])
 py.arg('--img_path',type=str, default='images')
+py.arg('--img_pattern', type="str", default="*.png")
 py.arg('--n_upsampling', type=int, default=4)
 py.arg('--batch_size', type=int, default=64)
 py.arg('--epochs', type=int, default=25)
@@ -70,7 +71,7 @@ elif args.dataset == 'grayscale':
     # ======================================
     # =               grayscale              =
     # ======================================
-    img_paths = py.glob(args.img_path, '*.png')
+    img_paths = py.glob(args.img_path, args.img_pattern)
     dataset, shape, len_dataset = data.make_grayscale_dataset(img_paths, args.batch_size)
     n_G_upsamplings = n_D_downsamplings = args.n_upsampling
 
@@ -78,7 +79,7 @@ elif args.dataset == 'custom':
     # ======================================
     # =               custom               =
     # ======================================
-    img_paths = py.glob(args.img_path, '*.png')
+    img_paths = py.glob(args.img_path, args.img_pattern)
     dataset, shape, len_dataset = data.make_anime_dataset(img_paths, args.batch_size, resize = args.img_size)
     n_G_upsamplings = n_D_downsamplings = args.n_upsampling
     # ======================================
